@@ -27,7 +27,7 @@ set(OSGEARTH_VERSION ${OSGEARTH_MAJOR_VERSION}.${OSGEARTH_MINOR_VERSION}.${OSGEA
 set(OSGEARTH_SOVERSION 158)
 
 # Require C++14
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Detect out-of-source build. We'll need this for protobuf generated files.
@@ -181,6 +181,14 @@ message(STATUS "Building ${OSGEARTH_DYNAMIC_OR_STATIC} libraries")
 
 # Whether to append SOVERSIONs to libraries (unix)
 option(OSGEARTH_SONAMES "ON to append so-version numbers to libraries" ON)
+
+
+if(CUSTOM_OUTPUT_DIR)
+  SET(OUTPUT_LIBDIR ${PROJECT_BINARY_DIR}/lib)
+	SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CUSTOM_OUTPUT_DIR}/bin)
+	SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CUSTOM_OUTPUT_DIR}/bin)
+  set(CMAKE_MSVC_RUNTIME_LIBRARY MultiThreadedDLL)
+endif()
 
 
 # Source code ............................................................

@@ -880,7 +880,8 @@ endif()
 if (spdlog_FOUND)
     message(STATUS "Found spdlog")
     set(OSGEARTH_HAVE_SPDLOG ON)
-    target_link_libraries(${LIB_NAME} PRIVATE spdlog::spdlog)
+    #target_link_libraries(${LIB_NAME} PRIVATE spdlog::spdlog)
+    target_link_libraries(${LIB_NAME} PRIVATE spdlog::spdlog_header_only)
 endif()
 
 # MBTiles support?
