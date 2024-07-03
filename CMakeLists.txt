@@ -25,24 +25,10 @@ set(OSGEARTH_VERSION ${OSGEARTH_MAJOR_VERSION}.${OSGEARTH_MINOR_VERSION}.${OSGEA
 # Increment this each time the ABI changes
 set(OSGEARTH_SOVERSION 187)
 
-# Forces a build that complies with the C++14 API and uses polyfills to do so
-# for C++17 types like variant, optional, and string_view.
-# Temporary solution until we can use native C++17 across the board.
-option(OSGEARTH_BUILD_WITH_CPP14_POLYFILLS "Build osgEarth with C++14 polyfills for std C++17 types" OFF)
-
-if(OSGEARTH_BUILD_WITH_CPP14_POLYFILLS)
-    message(STATUS "Building with polyfills to support C++14!")
-    set(OSGEARTH_HAVE_CPP14_POLYFILLS ON)
-    set(CMAKE_CXX_STANDARD 14)
-    set(CMAKE_CXX_STANDARD_REQUIRED ON)
-    set(CMAKE_CXX_EXTENSIONS OFF)
-else()
-    set(CMAKE_CXX_STANDARD 17)
-    set(CMAKE_CXX_STANDARD_REQUIRED ON)
-    set(CMAKE_CXX_EXTENSIONS OFF)
-endif()
-
-set(OSGEARTH_BUILDING_SDK ON)
+# Require C++14
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Detect out-of-source build. We'll need this for protobuf generated files.
 if (NOT "${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
@@ -226,6 +212,14 @@ set(OSGEARTH_GLCORE_INCLUDE_DIR "" CACHE PATH "Location of OpenGL CORE profile h
 mark_as_advanced(OSGEARTH_GLCORE_INCLUDE_DIR)
 if(OSGEARTH_GLCORE_INCLUDE_DIR)
     include_directories(${OSGEARTH_GLCORE_INCLUDE_DIR})
+endif()
+
+
+if(CUSTOM_OUTPUT_PATH)
+  SET(OUTPUT_LIBDIR ${PROJECT_BINARY_PATH}/lib)
+	SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CUSTOM_OUTPUT_PATH}/bin)
+	SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CUSTOM_OUTPUT_PATH}/bin)
+  set(CMAKE_MSVC_RUNTIME_LIBRARY MultiThreadedDLL)
 endif()
 
 
